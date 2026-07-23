@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="section" style="margin-bottom:20px">
+    <p class="section-label">Search artists</p>
+    <a href="{{ url_for('organisations.dashboard') }}" class="section-link"> Back</a>
+</div>
+
+<!-- Search filters -->
+ <div class="form-container" style="margin-bottom:24px;max-width:100%">
+    <form method="GET" action="{{ url_for('organisations.search_artists') }}">
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:12px;align-items:end">
+            <div class="form-group" style="margin-bottom:0">
+                <label> Art form</label>
+                <input type="text" name="art_form" value="{{ art_form }}" placeholder="e.g Dance"/>              
+            </div>
+            <div class="form-group" style="margin-bottom:0">
+                <label> Location</label>
+                <input type="text" name="location" value="{{ location }}" placeholder="e.g. Kigali"/>
+            </div>
+            <div class="form-group" style="margin-bottom:0">
+                <label> Age</label>
+                <input type="number" name="age" value="{{ age }}" placeholder="e.g.20"/>
+            </div>
+            <button type="submit" class="btn btn-primary"> Search</button>
+        </div>
+    </form>
+ </div>
+
+ <!-- Results -->
+ <div class="opp-list">
+    {% if artists %}
+        {% for artist in artists %}
+        <div class="opp-card">
+            <div class="opp-left">
+                <div class="opp-dot dot-purple"></div>
+                <div>
+                    <p class="opp-title">{{ artist.name }}</p>
+                    <p class="opp-meta">{{ artist.art_form }} . {{ artist.location }} . Age {{ artist.age }}</p>
+                </div>
+            </div>
+            <div class="opp-right">
+                <a href="{{ url_for('messages.send', receiver_id=artist.user_id) }}" class="opp-apply">Contact -></a>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="empty-state">
+            <i class="ti ti-users" aria-hidden="true"></i>
+            <p> No artists found. Try different filters.</p>
+        </div>
+    {% endif %}
+ </div>
+ {% endblock %}

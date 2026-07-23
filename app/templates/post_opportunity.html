@@ -1,0 +1,38 @@
+{% extend 'base.html' %}
+
+{% block content %}
+<div class="form-container">
+    <h2>Post an opportunity </h2>
+    <p class="step-indicator"> Fill in the details below to list a new opportunity for artists</p>
+
+    <form method="POST" action="{{ url_for('opportunities.post') }}">
+
+        <div class="form-group">
+            <label> Opportunity title</label>
+            <input type="text" name="title" placeholder="e.g, Dance Mentorship Programme 2026" required/>
+        </div>
+
+        <div class="form-group">
+            <label> Type</label>
+            <select name="type" required>
+                <option value="Mentorship"> Mentorship</option>
+                <option value="Training"> Training</option>
+                <option value="Residency"> Residency</option>
+                <option value="Job"> Job</option>
+                <option value="Audition"> Audition</option>
+                <option value="Programme"> Programme</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label> Application deadline</label>
+            <input type="date" name="deadline" required/>
+        </div>
+
+        <div class="btn-row">
+            <a href="{{ url_for('organisations.dashboard') }}" class="btn btn-secondary">Cancel</a>
+            <button type="submit" class="btn btn-primary"> Post opportunity</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

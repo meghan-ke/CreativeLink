@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="db">
+    <!-- BANNER-->
+    <div class="banner org-banner">
+        <p class="banner-greeting"> Organisation dashboard</p>
+        <h1 class="banner-name">{{ org.org_name }}</h1>
+        <div class="banner-meta">
+            <span>{{ org.org_type }}</span>
+            <div class="banner-dot"></div>
+            <span>{{ org.location }}</span>
+        </div>
+        <div class="banner-stats">
+            <div class="b-stat">
+                <p class="b-stat-num">{{ total_opportunities }}</p>
+                <p class="b-stat-label">Opportunities posted</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- QUICK ACCESS -->
+    <div class="section">
+        <div class="section-header">
+            <p class="section-label"> Quick access </p>
+        </div>
+        <div class="db-cards">
+            <a href="{{ url_for('organisations.profile') }}" class="db-card">
+                <div class="card-icon icon-purple">
+                    <i class="ti ti-building" aria-hidden="true"></i>
+                </div>
+                <p class="card-title">Our Profile</p>
+                <p class="card-sub"> View and update organisation details</p>
+            </a>
+            <a href="{{ url_for('opportunities.post') }}" class="db-card">
+                <div class="card-icon icon-pink">
+                    <i class="ti ti-plus" aria-hidden="true"></i>
+                </div>
+                <p class="card-title">Post Opportunity</p>
+                <p class="card-sub"> Add a new listing for artists</p>
+            </a>
+            <a href="{{ url_for('organisations.search_artists') }}" class="db-card">
+                <div class="card-icon icon-teal">
+                    <i class="ti ti-search" aria-hidden="true"></i>
+                </div>
+                <p class="card-title"> Search artists</p>
+                <p class="card-sub">Find talent by art form and location</p>
+            </a>
+            <a href="{{ url_for('messages.inbox') }}" class="db-card">
+                <div class="card-icon icon-amber">
+                    <i class="ti ti-message" aria-hidden="true"></i>
+                </div>
+                <p class="card-title"> Messages</p>
+                <p class="card-sub"> Communicate with artists</p>
+            </a>
+        </div>
+    </div>
+
+    <!-- POSTED OPPORTUNITIES -->
+    <div class="section">
+        <div class="section-header">
+            <p class="section-label">Your posted opportunities</p>
+            <a href="{{ url_for('opportunities.post') }}" class="section-link">+ Post new</a>
+        </div>
+        <div class="opp-list">
+            {% if opportunities %}
+                {% for opp in opportunities %}
+                <div class="opp-card">
+                    <div class="opp-left">
+                        <div class="opp-dot dot-purple"></div>
+                        <div>
+                            <p class="opp-title">{{ opp.title }}</p>
+                            <p class="opp-meta"> Closes {{ opp.deadline.strftime('%b %d, %y') }} . {{ opp.status }}</p>
+                        </div>
+                    </div>
+                    <div class="opp-right">
+                        <span class="opp-type type-purple">{{ opp.type }}</span>
+                        <a href="{{ url_for('opportunities.delete', id=opp.id) }}"
+                            class="opp-apply"
+                            onclick="return confirm('Delete this opportunity?')">Delete</a>
+
+                    </div>
+                </div>
+                {% endfor %}
+             {% else %}
+                <div class="empty-state">
+                    <i class="ti ti-briefcase" aria-hidden="true"></i>
+                    <p> No opportunities posted yet. Click Post new to get started.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div style="height:32px"></div>
+</div>
+{% endblock %}

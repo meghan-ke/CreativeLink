@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="section-header" style="margin-bottom:20px">
+    <p class="section-label">Messages</p>
+    <a href="{{ url_for('artists.dashboard') }}" class="section-link">← Back</a>
+</div>
+<div class="empty-state">
+    <i class="ti ti-message" aria-hidden="true"></i>
+    <p>No messages yet. Organisations will contact you here.</p>
+</div>
+{% endblock %}

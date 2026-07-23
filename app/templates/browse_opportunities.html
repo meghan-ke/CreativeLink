@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="section-header" style="margin-bottom:20px">
+    <p class="section-label">Available opportunities</p>
+    <a href="{{ url_for('artists.dashboard') }}" class="section-link">← Back to dashboard</a>
+</div>
+
+<div class="opp-list">
+    {% if opportunities %}
+        {% for opp in opportunities %}
+        <div class="opp-card">
+            <div class="opp-left">
+                <div class="opp-dot dot-purple"></div>
+                <div>
+                    <p class="opp-title">{{ opp.title }}</p>
+                    <p class="opp-meta">{{ opp.organisation.org_name }} · Closes {{ opp.deadline.strftime('%b %d, %Y') }}</p>
+                </div>
+            </div>
+            <div class="opp-right">
+                <span class="opp-type type-purple">{{ opp.type }}</span>
+                <a href="#" class="opp-apply">Apply →</a>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="empty-state">
+            <i class="ti ti-briefcase" aria-hidden="true"></i>
+            <p>No opportunities available yet. Check back soon.</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

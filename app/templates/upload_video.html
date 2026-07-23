@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="form-container">
+    <h2>Upload your talent video</h2>
+    <p class="step-indicator">Share a short clip showcasing your art</p>
+    <div class="empty-state" style="margin-top:20px">
+        <i class="ti ti-video" aria-hidden="true"></i>
+        <p>Video upload coming soon.</p>
+    </div>
+    <div class="btn-row" style="margin-top:20px">
+        <a href="{{ url_for('artists.dashboard') }}" class="btn btn-secondary">← Back</a>
+    </div>
+</div>
+{% endblock %}

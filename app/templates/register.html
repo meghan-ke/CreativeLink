@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="form-container">
+
+    <!-- STEP 1 -->
+     <div id="step1">
+        <h2> Create your account</h2>
+        <p class="step-indicator"> Step of 1 of 2 - Account details</p>
+
+        {% if error %}
+        <div class="error-message">{{ error }}</div>
+        {% endif %}
+
+        <div class="form-group">
+            <label> I am registering as:</label>
+            <select name="user-type" id="role">
+                <option value=""> Select Role</option>
+                <option value="artist"> Artist</option>
+                <option value="organisation"> Organisation</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label> Email address</label>
+            <input type="email" id="email" placeholder="Enter your Email" required/>
+        </div>
+
+        <div class="form-group">
+            <label> Password</label>
+            <input type="password" id="password" placeholder="Enter password " required/>
+        </div>
+
+        <button type="button" class="btn btn-primary" onclick="goToStep2()"> Next -></button>
+        <p> Already have an account? <a href="{{ url_for('auth.login') }}">Login here</a></p>
+     </div>
+
+     <!-- STEP 2-->
+     <div id="step2" style="display:none">
+
+        <!-- Artist fields-->
+        <div id="artist-step2" style="display:none">
+            <h2> Tell us more about yourself</h2>
+            <p class="step-indicator">Step 2 of 2 - Artist profile</p>
+
+            <form method="POST" action="{{ url_for('auth.register') }}">
+                <input type="hidden" name="role" id="hidden-role-artist"/>
+                <input type="hidden" name="email" id="hidden-email-artist"/>
+                <input type="hidden" name="password" id="hidden-password-artist"/>
+
+                <div class="form-group">
+                    <label> Full name</label>
+                    <input type="text" name="name" placeholder="Your full name" required/>
+                </div>
+                <div class="form-group">
+                    <label> Age</label>
+                    <input type="number" name="age" placeholder="Your age" required/>
+                </div>
+                <div class="form-group">
+                    <label> Location</label>
+                    <input type="text" name="location"  placeholder="Your Location" placeholder="City, Country" required/>
+                </div>
+                <div class="form-group">
+                    <label> Art Form</label>
+                    <input type="text" name="art-form" placeholder="e.g, Dance, Music, Painting" required/>
+                </div>
+                <div class="btn-row">
+                    <button type="button" class="btn btn-secondary" onclick="goBack()"> Back</button>
+                    <button type="submit" class="btn btn-primary">Create Account</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Organisation fields -->
+        <div id="organisation-step2" style="display:none">
+            <h2> Tell us more about your organisation</h2>
+            <p class="step-indicator">Step 2 of 2 - Organisation profile</p>
+
+            <form method="POST" action="{{ url_for('auth.register') }}">
+                <input type="hidden" name="role" id="hidden-role-org"/>
+                <input type="hidden" name="email" id="hidden-email-org"/>
+                <input type="hidden" name="password" id="hidden-password-org"/>
+
+                <div class="form-group">
+                    <label> Organisation Name</label>
+                    <input type="text" name="org_name" placeholder="Your organisation's name" required/>
+                </div>
+                <div class="form-group">
+                    <label> Organisation Type</label>
+                    <input type="text" name="org_type" placeholder="e.g NGO, School,..." required/>
+                </div>
+                <div class="form-group">
+                    <label> Location</label>
+                    <input type="text" name="location" placeholder="City, Country" required/>
+                </div>
+                <div class="btn-row">
+                    <button type="button" class="btn btn-secondary" onclick="goBack()"> Back</button>
+                    <button type="submit" class="btn btn-primary">Create Account</button>
+                </div>
+            </form>
+        </div>
+
+     </div>
+</div>
+
+<script>
+    function goToStep2() {
+        const role = document.getElementById('role').value
+        const email = document.getElementById('email').value
+        const password = document.getElementById('password').value
+
+        if (!role) {
+            alert('please select a role before continuing')
+            return
+        }
+        if (!email) {
+            alert('Please enter your email before continuing')
+            return
+        }
+        if (!password) {
+            alert('Please enter a password before continuing')
+            return
+        }
+
+        // pass step 1 values into hidden fields
+        document.getElementById('hidden-role-artist').value = role
+        document.getElementById('hidden-email-artist').value = email
+        document.getElementById('hidden-password-artist').value = password
+        document.getElementById('hidden-role-org').value = role
+        document.getElementById('hidden-email-org').value = email
+        document.getElementById('hidden-password-org').value = password
+
+        // show step 2
+        document.getElementById('step1').style.display = 'none'
+        document.getElementById('step2').style.display = 'block'
+
+        if (role === 'artist') {
+            document.getElementById('artist-step2').style.display = 'block'
+            document.getElementById('organisation-step2').style.display = 'none'
+        } else {
+            document.getElementById('organisation-step2').style.display = 'block'
+            document.getElementById('artist-step2').style.display = 'none'
+        }
+
+    }
+
+    function goBack() {
+        document.getElementById('step2').style.display = 'none'
+        document.getElementById('step1').style.display = 'block'
+    }
+</script>
+{% endblock %}
