@@ -25,7 +25,7 @@ def view(id):
 def post():
     if 'user_id' not in session:
         return redirect(url_for('auth.login'))
-    if session.get('role', '').lower() != 'organisation':
+    if session.get('role').lower() != 'organisation':
         return redirect(url_for('artists.dashboard'))
     
     org = Organisation.query.filter_by(user_id=session['user_id']).first()
@@ -38,6 +38,10 @@ def post():
             organisation_id=org.id,
             title=request.form.get('title'),
             type=request.form.get('type'),
+            description=request.form.get('description'),
+            art_form=request.form.get('art_form'),
+            criteria=request.form.get('criteria'),
+            location=request.form.get('location'),
             deadline=datetime.strptime(request.form.get('deadline'), '%Y-%m-%d'),
             status='open'
         )
