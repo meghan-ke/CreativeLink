@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="form-container">
+    <h2> Send a message</h2>
+    <p class="step-indicator">
+        {% if receiver %}
+        sending to: {{ receiver.email }}
+        {% else %}
+        Compose a new message
+        {% endif %}
+    </p>
+
+    <form method="POST" action="{{ url_for('messages.send') }}">
+        <input type="hidden" name="receiver_id" value="{{ receiver_id }}"/>
+
+        <div class="form-group">
+            <label> Message</label>
+            <textarea name="content" rows="5"
+                placeholder="Write your message here..." required></textarea>
+        </div>
+
+        <div class="btn-row">
+            <a href="{{ url_for('messages.inbox') }}" class="btn btn-secondary">Cancel</a>
+            <button type="submit" class="btn btn-primary"> Send message</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

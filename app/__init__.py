@@ -34,7 +34,7 @@ def create_app():
     from app.routes.opportunities import opportunities_bp
     from app.routes.applications import applications_bp
     from app.routes.videos import videos_bp
-    from app.routes.messages import message_bp
+    from app.routes.messages import messages_bp
 
     app.register_blueprint(auth_bp, url_prefix='/api/auth')
     app.register_blueprint(artists_bp, url_prefix='/api/artists')
@@ -42,7 +42,7 @@ def create_app():
     app.register_blueprint(opportunities_bp, url_prefix='/api/opportunities')
     app.register_blueprint(applications_bp, url_prefix='/api/applications')
     app.register_blueprint(videos_bp, url_prefix='/api/videos')
-    app.register_blueprint(message_bp, url_prefix='/api/messages')
+    app.register_blueprint(messages_bp, url_prefix='/api/messages')
 
 
     @app.route('/')
