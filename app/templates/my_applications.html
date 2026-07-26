@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="section-header" style="margin-bottom:20px">
+    <p class="section-label">My applications</p>
+    <a href="{{ url_for('artists.dashboard') }}" class="section-link"> Back</a>
+</div>
+
+<div class="opp-list">
+    {% if applications %}
+        {% for app in applications %}
+        <div class="opp-card">
+            <div class="opp-left">
+                <div class="opp-dot
+                    {% if app.status == 'submitted' %}dot-purple
+                    {% elif app.status == 'accepted' %}dot-teal
+                    {% else %}dot-pink{% endif %}">
+                </div>
+                <div>
+                    <p class="opp-title">{{ app.opportunity.title }}</p>
+                    <p class="opp-meta">
+                        {{ app.opportunity.organisation.org_name }} . Applied {{ app.submitted_at.strftime('%b %d, %Y') }}
+                    </p>
+                </div>
+            </div>
+            <div class="opp-right">
+                <span class="opp-type
+                    {% if app.status == 'submitted' %} type-purple
+                    {% elif app.status == 'accepted' %} type-teal
+                    {% else %}type-pink{% endif %}">
+                    {{ app.status | capitalize }}
+                </span>
+                {% if app.status == 'submitted' %}
+                <a href="{{ url_for('applications.withdraw', application_id=app.id) }}"
+                    class="opp-apply"
+                    style="color:#D4537E"
+                    onclick="return confirm('Withdraw this application?')">
+                    Withdraw
+                </a>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="empty-state">
+            <i class="ti ti-file-text" aria-hidden="true"></i>
+            <p> No applications yet. Browse opportunities to get started.</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

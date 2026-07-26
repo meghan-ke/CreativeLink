@@ -49,7 +49,7 @@ def post():
         db.session.commit()
         return redirect(url_for('organisations.dashboard'))
 
-    return render_template('post_opportunity.html')
+    return render_template('post_opportunity.html', org=org)
 
 @opportunities_bp.route('/delete/<id>')
 def delete(id):

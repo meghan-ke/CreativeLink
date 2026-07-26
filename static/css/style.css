@@ -497,3 +497,113 @@ body {
 .org-banner {
     background: linear-gradient(135deg, #534AB7 0%, #993556 100%);
 }
+
+/* ── Post opportunity ── */
+.post-opp-container {
+    max-width: 680px;
+    margin: 0 auto;
+}
+
+.post-opp-header {
+    margin-bottom: 32px;
+}
+
+.post-opp-logo {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+}
+
+.org-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #7F77DD, #D4537E);
+    color: white;
+    font-size: 20px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.org-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+}
+
+.org-type {
+    font-size: 12px;
+    color: #999;
+}
+
+.post-opp-title {
+    font-size: 24px;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 6px;
+}
+
+.post-opp-sub {
+    font-size: 13px;
+    color: #999;
+}
+
+.post-opp-form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.form-section {
+    background: #fff;
+    border: 0.5px solid #e8e8e8;
+    border-radius: 12px;
+    padding: 24px;
+}
+
+.form-section-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    color: #999;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+textarea {
+    width: 100%;
+    padding: 10px 14px;
+    border: 0.5px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #333;
+    font-family: inherit;
+    resize: vertical;
+    outline: none;
+    transition: border-color 0.15s;
+}
+
+textarea:focus {
+    border-color: #7F77DD;
+}
+
+.main-content {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 28px 20px;
+}
+
+.container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 28px 20px;
+}

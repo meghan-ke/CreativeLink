@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="post-opp-container">
+
+    <div class="section-header" style="margin-bottom:24px">
+        <a href="{{ url_for('opportunities.browse') }}" class="section-link"> Back to opportunities</a>
+    </div>
+
+    <div class="form-section">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px">
+            <div>
+                <h1 style="font-size:22px;font-weight:500;color:#333;margin-bottom:6px">
+                    {{ opportunity.title }}
+                </h1>
+                <p style="font-size:13px;color:#999">
+                    {{ opportunity.organisation.org_name }}
+                    {{ opportunity.type }}
+                    Closes {{ opportunity.deadline.strftime('%b %d, %Y') }}
+                </p>
+            </div>
+            <span class="opp-type type-purple"> {{ opportunity.type }}</span>
+        </div>
+
+        {% if opportunity.description %}
+        <div style="margin-bottom:20px">
+            <p class="form-section-label"> About this opportunity</p>
+            <p style="font-size:14px;color:#555; line-height:1.7">{{ opportunity.description }}</p>
+        </div>
+        {% endif %}
+
+        <div style="display:grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px">
+            {% if opportunity.art_form %}
+            <div>
+                <p class="form-section-label">Art form</p>
+                <p style="font-size:14px;color:#333">{{ opportunity.art_form }}</p>
+            </div>
+            {% endif %}
+            {% if opportunity.location %}
+            <div>
+                <p class="form-section-label">Location</p>
+                <p style="font-size:14px;color:#333">{{ opportunity.location }}</p>
+            </div>
+            {% endif %}
+            {% if opportunity.criteria %}
+            <div>
+                <p class="form-section-label">Eligibility criteria</p>
+                <p style="font-size:14px;color:#333">{{ opportunity.criteria }}</p>
+            </div>
+            {% endif %}
+            <div>
+                <p class="form-section-label"> Application deadline</p>
+                <p style="font-size:14px;color:#333">
+                    {{ opportunity.deadline.strftime('%B %d, %Y') }}
+                </p>
+            </div>
+        </div>
+
+        {% if session.get('role') == 'artist' %}
+        <form method="POST"
+            action="{{ url_for('applications.apply', opportunity_id=opportunity.id) }}">
+            <button type="submit" class="btn btn-primary">Apply for this opportunity</button>
+        </form>
+        {% endif %}
+
+    </div>
+</div>
+{% endblock %}
