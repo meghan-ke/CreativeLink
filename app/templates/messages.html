@@ -1,12 +1,66 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="section-header" style="margin-bottom:20px">
+<div class="section-header" style="margin-bottom:24px">
     <p class="section-label">Messages</p>
-    <a href="{{ url_for('artists.dashboard') }}" class="section-link">← Back</a>
+    <a href="{% if session.get('role') == 'artist' %}{{ url_for('artists.dashboard') }}{% else %}{{ url_for('organisations.dashboard') }}{% endif %}"
+        class="section-link">Back</a>
 </div>
-<div class="empty-state">
-    <i class="ti ti-message" aria-hidden="true"></i>
-    <p>No messages yet. Organisations will contact you here.</p>
-</div>
+
+<!-- Received-->
+ <div class="section">
+    <div class="section-header">
+        <p class="section-label">Received</p>
+    </div>
+    <div class="opp-list">
+        {% if received %}
+            {% for msg in received %}
+            <div class="opp-card">
+                <div class="opp-left">
+                    <div class="opp-dot dot-purple"></div>
+                    <div>
+                        <p class="opp-title">{{ msg.content[:80] }}{% if msg.content|length > 80 %}...{% endif %}</p>
+                        <p class="opp-meta">{{ msg.sent_at.strftime('%b %d, %Y %H:%M') }}</p>
+                    </div>
+                </div>
+                <div class="opp-right">
+                    <a href="{{ url_for('messages.send', receiver_id=msg.sender_id) }}" class="opp-apply">Reply -></a>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="empty-state">
+                <i class="ti ti-message" aria-hidden="true"></i>
+                <p> No messages received yet.</p>
+            </div>
+        {% endif %}
+        </div>
+ </div>
+
+ <!-- SENT -->
+  <div class="section">
+    <div class="section-header">
+        <p class="section-label">Sent</p>
+    </div>
+    <div class="opp-list">
+        {% if sent %}
+            {% for msg in sent %}
+            <div class="opp-card">
+                <div class="opp-left">
+                    <div class="opp-dot dot-teal"></div>
+                    <div>
+                        <p class="opp-title">{{ msg.content[:80] }}{% if msg.content|length > 80 %}...{% endif %}</p>
+                        <p class="opp-meta">{{ msg.sent_at.strftime('%b %d, %Y %H:%M') }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="empty-state">
+                <i class="ti ti-message" aria-hidden="true"></i>
+                <p> No messages sent yet.</p>
+            </div>
+        {% endif %}
+    </div>
+  </div>
 {% endblock %}

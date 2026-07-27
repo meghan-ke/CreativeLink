@@ -34,4 +34,13 @@ def send(receiver_id=None):
 def inbox():
     if 'user_id' not in session:
         return redirect(url_for('auth.login'))
-    return render_template('messages.html')
+
+    received = Message.query.filter_by(
+        receiver_id=session['user_id']
+    ).order_by(Message.sent_at.desc()).all()
+
+    sent = Message.query.filter_by(
+        sender_id=session['user_id']
+    ).order_by(Message.sent_at.desc()).all()
+
+    return render_template('messages.html', received=received, sent=sent)
