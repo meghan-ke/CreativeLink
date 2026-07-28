@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, session, redirect, url_for, request
 from datetime import datetime
 from app import db
-from app.models import Opportunity, Organisation
+from app.models import Opportunity, Organisation, Application, YoungArtist
 
 opportunities_bp = Blueprint('opportunities', __name__)
 
@@ -59,3 +59,31 @@ def delete(id):
     db.session.delete(opportunity)
     db.session.commit()
     return redirect(url_for('organisations.dashboard'))
+
+@opportunities_bp.route('/applications/<opportunity_id>')
+def view_applications(opportunity_id):
+    if 'user_id' not in session:
+        return redirect(url_for('auth.login'))
+
+    opportunity = Opportunity.query.get_or_404(opportunity_id)
+    applications = Application.query.filter_by(
+        opportunity_id=opportunity_id
+    ).all()
+
+    return render_template('view_applications.html',
+                     opportunity=opportunity,
+                     applications=applications
+    )
+
+
+@opportunities_bp.route('/applications/update/<application_id>/<status>')
+def update_application(application_id, status):
+    if 'user_id' not in session:
+        return redirect(url_for('auth.login'))
+
+    application = Application.query.get_or_404(application_id)
+    application.status = status
+    db.session.commit()
+
+    return redirect(url_for('opportunities.view_applications',
+             opportunity_id=application.opportunity_id))

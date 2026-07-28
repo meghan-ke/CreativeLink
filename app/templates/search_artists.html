@@ -35,7 +35,12 @@
             <div class="opp-left">
                 <div class="opp-dot dot-purple"></div>
                 <div>
-                    <p class="opp-title">{{ artist.name }}</p>
+                    <p class="opp-title">
+                        <a href="{{ url_for('videos.artist_videos', artist_id=artist.id) }}"
+                            style="color:#333;text-decoration:none">
+                                {{ artist.name }}
+                        </a>
+                    </p>
                     <p class="opp-meta">{{ artist.art_form }} . {{ artist.location }} . Age {{ artist.age }}</p>
                 </div>
             </div>

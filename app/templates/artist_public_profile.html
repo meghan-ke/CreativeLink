@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="post-opp-container">
+
+    <!-- Artist banner -->
+    <div class="banner" style="margin-bottom:24px">
+        <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px">
+            <div class="org-avatar" style="width:56px;height:56px;font-size:24px">
+                {{ artist.name[0] }}
+            </div>
+            <div>
+                <p class="banner-greeting">Young Artist</p>
+                <h1 class="banner-name" style="margin-bottom:4px">{{ artist.name }}</h1>
+                <div class="banner-meta" style="margin-bottom:0">
+                    <span>{{ artist.art_form }}</span>
+                    <div class="banner-dot"></div>
+                    <span>{{ artist.location }}</span>
+                    <div class="banner-dot"></div>
+                    <span>Age {{ artist.age }}</span>
+                </div>
+            </div>
+        </div>
+        <div class="banner-stats">
+            <div class="b-stat">
+                <p class="b-stat-num">{{ videos|length }}</p>
+                <p class="b-stat-label">Videos uploaded</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile details -->
+    <div class="form-section" style="margin-bottom:24px">
+        <p class="form-section-label">Profile details</p>
+        <div class="profile-details" style="margin:0">
+            <div class="profile-row">
+                <span class="profile-label">Full name</span>
+                <span class="profile-value">{{ artist.name }}</span>
+            </div>
+            <div class="profile-row">
+                <span class="profile-label">Art form</span>
+                <span class="profile-value">{{ artist.art_form }}</span>
+            </div>
+            <div class="profile-row">
+                <span class="profile-label">Location</span>
+                <span class="profile-value">{{ artist.location }}</span>
+            </div>
+            <div class="profile-row" style="border:none">
+                <span class="profile-label">Age</span>
+                <span class="profile-value">{{ artist.age }}</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Videos -->
+    <div class="section-header">
+        <p class="section-label">Talent videos</p>
+    </div>
+
+    <div class="opp-list" style="margin-bottom:24px">
+        {% if videos %}
+            {% for video in videos %}
+            <div class="form-section" style="padding:16px">
+                <div style="display:flex;justify-content:space-between;
+                            align-items:center;margin-bottom:12px">
+                    <div>
+                        <p class="opp-title">{{ video.title }}</p>
+                        <p class="opp-meta">{{ video.art_form }} ·
+                            {{ video.uploaded_at.strftime('%b %d, %Y') }}</p>
+                    </div>
+                    <span class="opp-type type-purple">{{ video.art_form }}</span>
+                </div>
+                <video controls style="width:100%;border-radius:8px;
+                                       max-height:360px;background:#000">
+                    <source src="{{ video.video_url }}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="empty-state">
+                <i class="ti ti-video" aria-hidden="true"></i>
+                <p>This artist has not uploaded any videos yet.</p>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Actions -->
+    <div class="btn-row">
+        <a href="{{ url_for('organisations.search_artists') }}"
+           class="btn btn-secondary">← Back to search</a>
+        <a href="{{ url_for('messages.send', receiver_id=artist.user_id) }}"
+           class="btn btn-primary">Contact artist</a>
+    </div>
+
+</div>
+{% endblock %}

@@ -1,15 +1,83 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="form-container">
-    <h2>Upload your talent video</h2>
-    <p class="step-indicator">Share a short clip showcasing your art</p>
-    <div class="empty-state" style="margin-top:20px">
-        <i class="ti ti-video" aria-hidden="true"></i>
-        <p>Video upload coming soon.</p>
+<div class="post-opp-container">
+
+    <div class="post-opp-header">
+        <div class="post-opp-logo">
+            <div class="org-avatar">{{ artist.name[0] }}</div>
+            <div>
+                <p class="org-name">{{ artist.name }}</p>
+                <p class="org-type">{{ artist.art_form }} . {{ artist.location }}</p>
+            </div>
+        </div>
+        <h1 class="post-opp-title">My Videos</h1>
+        <p class="post-opp-sub">Upload a short clip showcasing your talent to attract organisations</p>
     </div>
-    <div class="btn-row" style="margin-top:20px">
-        <a href="{{ url_for('artists.dashboard') }}" class="btn btn-secondary">← Back</a>
-    </div>
+
+    <!-- Upload form -->
+     <div class="form-section" style="margin-bottom:24px">
+        <p class="form-section-label">Upload new video</p>
+        <form method="POST" action="{{ url_for('videos.upload') }}"
+            enctype="multipart/form-data">
+            <div class="form-row">
+                <div class="form-group">
+                    <label> Video title</label>
+                    <input type="text" name="title"
+                        placeholder="e.g. My dance showcase 2026" required/>
+                </div>
+                <div class="form-group">
+                    <label> Art form</label>
+                    <input type="text" name="art_form"
+                        placeholder="e.g. Dance, Music, Painting" required/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label> Select video file</label>
+                <input type="file" name="video" accept="video/*" required/>
+            </div>
+            <div class="btn-row">
+                <a href="{{ url_for('artists.dashboard') }}" class="btn btn-primary"> Back</a>
+                <button type="submit" class="btn btn-primary"> Upload video</button>
+            </div>
+        </form>
+     </div>
+
+     <!-- Existing videos -->
+      <div class="section-header">
+        <p class="section-label">My uploaded videos</p>
+      </div>
+
+      <div class="opp-list">
+        {% if videos %}
+            {% for video in videos %}
+            <div class="opp-card">
+                <div class="opp-left">
+                    <div class="opp-dot dot-purple"></div>
+                    <div>
+                        <p class="opp-title">{{ video.title }}</p>
+                        <p class="opp-meta">{{ video.art_form }} . {{ video.uploaded_at.strftime('%b %d, %Y') }}</p>
+                    </div>
+                </div>
+                <div class="opp-right">
+                    <a href="{{ video.video_url }}" target="_blank" class="opp-apply">
+                        Watch ->
+                    </a>
+                    <a href="{{ url_for('videos.delete', video_id=video.id) }}"
+                        class="opp-apply"
+                        style="color:#D4537E"
+                        onclick="return confirm('Delete this video?')">
+                        Delete
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="empty-state">
+                <i class="ti ti-video" aria-hidden="true"></i>
+                <p> No videos uploaded yet. Upload your first video above.</p>
+            </div>
+        {% endif %}
+      </div>
 </div>
 {% endblock %}

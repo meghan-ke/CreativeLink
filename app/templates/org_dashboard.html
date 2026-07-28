@@ -75,10 +75,14 @@
                     </div>
                     <div class="opp-right">
                         <span class="opp-type type-purple">{{ opp.type }}</span>
-                        <a href="{{ url_for('opportunities.delete', id=opp.id) }}"
-                            class="opp-apply"
-                            onclick="return confirm('Delete this opportunity?')">Delete</a>
-
+                        <div style="display:flex;gap:8px">
+                            <a href="{{ url_for('opportunities.view_applications', opportunity_id=opp.id) }}"
+                                class="opp-apply">Applications</a>
+                            <a href="{{ url_for('opportunities.delete', id=opp.id) }}"
+                                class="opp-apply"
+                                style="color:#D4537E"
+                                onclick="return confirm('Delete this opportunity?')">Delete</a>
+                        </div>
                     </div>
                 </div>
                 {% endfor %}
