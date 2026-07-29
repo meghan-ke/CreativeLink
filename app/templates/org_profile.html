@@ -1,48 +1,124 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="form-container">
+<div class="post-opp-container">
 
     {% if edit %}
-    <h2> Edit organisation profile</h2>
+    <h2>Edit organisation profile</h2>
     <form method="POST" action="{{ url_for('organisations.edit_profile') }}">
         <div class="form-group">
-            <label> Organisation name</label>
+            <label>Organisation name</label>
             <input type="text" name="org_name" value="{{ org.org_name }}" required/>
         </div>
         <div class="form-group">
-            <label> Organisation type</label>
+            <label>Organisation type</label>
             <input type="text" name="org_type" value="{{ org.org_type }}" required/>
         </div>
         <div class="form-group">
-            <label> Location </label>
+            <label>Location</label>
             <input type="text" name="location" value="{{ org.location }}" required/>
+        </div>
+        <div class="form-group">
+            <label>Contact email</label>
+            <input type="email" name="contact_email" value="{{ org.contact_email or '' }}"/>
+        </div>
+        <div class="form-group">
+            <label>Website</label>
+            <input type="url" name="website" value="{{ org.website or '' }}"/>
+        </div>
+        <div class="form-group">
+            <label>Phone</label>
+            <input type="text" name="phone" value="{{ org.phone or '' }}"/>
+        </div>
+        <div class="form-group">
+            <label>Logo URL</label>
+            <input type="url" name="logo_url" value="{{ org.logo_url or '' }}"/>
+        </div>
+        <div class="form-group">
+            <label>About us</label>
+            <textarea name="about_us" rows="5">{{ org.about_us or '' }}</textarea>
         </div>
         <div class="btn-row">
             <a href="{{ url_for('organisations.profile') }}" class="btn btn-secondary">Cancel</a>
-            <button type="submit" class="btn btn-primary"> Save changes </button>
+            <button type="submit" class="btn btn-primary">Save changes</button>
         </div>
     </form>
 
     {% else %}
-    <h2> Organisation profile</h2>
-    <div class="profile-details">
-        <div class="profile-row">
-            <span class="profile-label">Name</span>
-            <span class="profile-value">{{ org.org_name }}</span>
+    <div class="banner" style="margin-bottom:24px">
+        <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px">
+            <div class="org-avatar" style="width:64px;height:64px;font-size:28px">
+                {% if org.logo_url %}
+                    <img src="{{ org.logo_url }}" alt="{{ org.org_name }}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">
+                {% else %}
+                    {{ org.org_name[0] if org.org_name else 'O' }}
+                {% endif %}
+            </div>
+            <div>
+                <p class="banner-greeting">Organisation</p>
+                <h1 class="banner-name" style="margin-bottom:4px">{{ org.org_name }}</h1>
+                <div class="banner-meta" style="margin-bottom:0">
+                    <span>{{ org.org_type }}</span>
+                    <div class="banner-dot"></div>
+                    <span>{{ org.location }}</span>
+                </div>
+            </div>
         </div>
-        <div class="profile-row">
-            <span class="profile-label">Type</span>
-            <span class="profile_value">{{ org.org_type }}</span>
-        </div>
-        <div class="profile-row">
-            <span class="profile-label">Location</span>
-            <span class="profile-value">{{ org.location }}</span>
+        <div class="banner-stats">
+            <div class="b-stat">
+                <p class="b-stat-num">{{ open_opportunities_count }}</p>
+                <p class="b-stat-label">Open opportunities</p>
+            </div>
+            <div class="b-stat">
+                <p class="b-stat-num">{{ opportunities|length }}</p>
+                <p class="b-stat-label">Total opportunities</p>
+            </div>
         </div>
     </div>
+
+    <div class="form-section" style="margin-bottom:24px">
+        <p class="form-section-label">About us</p>
+        <p style="margin:0;line-height:1.6">{{ org.about_us or 'This organisation has not added an introduction yet.' }}</p>
+    </div>
+
+    <div class="form-section" style="margin-bottom:24px">
+        <p class="form-section-label">Organisation details</p>
+        <div class="profile-details" style="margin:0">
+            <div class="profile-row">
+                <span class="profile-label">Name</span>
+                <span class="profile-value">{{ org.org_name }}</span>
+            </div>
+            <div class="profile-row">
+                <span class="profile-label">Type</span>
+                <span class="profile-value">{{ org.org_type }}</span>
+            </div>
+            <div class="profile-row">
+                <span class="profile-label">Location</span>
+                <span class="profile-value">{{ org.location }}</span>
+            </div>
+            <div class="profile-row">
+                <span class="profile-label">Contact email</span>
+                <span class="profile-value">{{ org.contact_email or 'Not provided' }}</span>
+            </div>
+            <div class="profile-row">
+                <span class="profile-label">Website</span>
+                <span class="profile-value">
+                    {% if org.website %}
+                        <a href="{{ org.website }}" target="_blank" rel="noopener noreferrer">{{ org.website }}</a>
+                    {% else %}
+                        Not provided
+                    {% endif %}
+                </span>
+            </div>
+            <div class="profile-row" style="border:none">
+                <span class="profile-label">Phone</span>
+                <span class="profile-value">{{ org.phone or 'Not provided' }}</span>
+            </div>
+        </div>
+    </div>
+
     <div class="btn-row">
-        <a href="{{ url_for('organisations.dashboard') }}" class="btn btn-secondary">Back</a>
-        <a href="{{ url_for('organisations.edit_profile') }}" class="btn btn-primary"> Edit profile</a>
+        <a href="{{ url_for('organisations.edit_profile') }}" class="btn btn-primary">Edit profile</a>
     </div>
     {% endif %}
 </div>

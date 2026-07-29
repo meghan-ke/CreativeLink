@@ -4,6 +4,7 @@ from flask_jwt_extended import JWTManager
 from flask_bcrypt import Bcrypt
 from flask_cors import CORS
 from dotenv import load_dotenv
+from sqlalchemy import inspect, text
 import os
 
 load_dotenv()
@@ -11,6 +12,25 @@ load_dotenv()
 db = SQLAlchemy()
 jwt = JWTManager()
 bcrypt = Bcrypt()
+
+def ensure_organisation_columns(app):
+    with app.app_context():
+        inspector = inspect(db.engine)
+        columns = {column['name'] for column in inspector.get_columns('organisations')}
+        new_columns = {
+            'contact_email': 'VARCHAR(120)',
+            'website': 'VARCHAR(255)',
+            'phone': 'VARCHAR(50)',
+            'logo_url': 'VARCHAR(255)',
+            'about_us': 'TEXT'
+        }
+
+        for column_name, column_type in new_columns.items():
+            if column_name not in columns:
+                db.session.execute(text(f"ALTER TABLE organisations ADD COLUMN {column_name} {column_type}"))
+
+        db.session.commit()
+
 
 def create_app():
     import os
@@ -49,5 +69,9 @@ def create_app():
     def index():
         from flask import render_template
         return render_template('landing.html')
+
+    with app.app_context():
+        db.create_all()
+        ensure_organisation_columns(app)
 
     return app

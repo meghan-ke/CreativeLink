@@ -20,6 +20,10 @@ class YoungArtist(db.Model):
     age = db.Column(db.Integer, nullable=False)
     location = db.Column(db.String(100), nullable=False)
     art_form = db.Column(db.String(100), nullable=False)
+    bio = db.Column(db.Text, nullable=True)
+    profile_picture_url = db.Column(db.String(255), nullable=True)
+    cover_photo_url = db.Column(db.String(255), nullable=True)
+    social_links = db.Column(db.Text, nullable=True)
     videos = db.relationship('Video', backref='young_artist', lazy=True)
     applications = db.relationship('Application', backref='young_artist', lazy=True)
     
@@ -30,6 +34,11 @@ class Organisation(db.Model):
     org_name = db.Column(db.String(100), nullable=False)
     org_type = db.Column(db.String(100), nullable=False)
     location = db.Column(db.String(100), nullable=False)
+    contact_email = db.Column(db.String(120), nullable=True)
+    website = db.Column(db.String(255), nullable=True)
+    phone = db.Column(db.String(50), nullable=True)
+    logo_url = db.Column(db.String(255), nullable=True)
+    about_us = db.Column(db.Text, nullable=True)
     opportunities = db.relationship('Opportunity', backref='organisation', lazy=True)
 
 class Video(db.Model):
@@ -61,8 +70,17 @@ class Application(db.Model):
     id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     young_artist_id = db.Column(db.String(36), db.ForeignKey('young_artists.id'), nullable=False)
     opportunity_id = db.Column(db.String(36), db.ForeignKey('opportunities.id'), nullable=False)
-    status = db.Column(db.String(20), default='submitted')
+    status = db.Column(db.String(20), default='pending')
     submitted_at = db.Column(db.DateTime, default=datetime.utcnow)
+    full_name = db.Column(db.String(120), nullable=True)
+    date_of_birth = db.Column(db.String(50), nullable=True)
+    nationality = db.Column(db.String(100), nullable=True)
+    phone_number = db.Column(db.String(50), nullable=True)
+    cover_letter = db.Column(db.Text, nullable=True)
+    relevant_experience = db.Column(db.Text, nullable=True)
+    availability = db.Column(db.String(100), nullable=True)
+    showcase_video_id = db.Column(db.String(36), db.ForeignKey('videos.id'), nullable=True)
+    review_notes = db.Column(db.Text, nullable=True)
 
 class Message(db.Model):
     __tablename__ = 'messages'

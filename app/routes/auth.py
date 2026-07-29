@@ -35,7 +35,11 @@ def register():
                 name=request.form.get('name'),
                 age=int(request.form.get('age')),
                 location=request.form.get('location'),
-                art_form=request.form.get('art-form')
+                art_form=request.form.get('art-form'),
+                bio=request.form.get('bio') or None,
+                profile_picture_url=request.form.get('profile_picture_url') or None,
+                cover_photo_url=request.form.get('cover_photo_url') or None,
+                social_links=request.form.get('social_links') or None
             )
             db.session.add(artist)
 
@@ -44,7 +48,12 @@ def register():
                 user_id=new_user.id,
                 org_name=request.form.get('org_name'),
                 org_type=request.form.get('org_type'),
-                location=request.form.get('location')
+                location=request.form.get('location'),
+                contact_email=request.form.get('contact_email') or email,
+                website=request.form.get('website'),
+                phone=request.form.get('phone'),
+                logo_url=request.form.get('logo_url'),
+                about_us=request.form.get('about_us')
             )
             db.session.add(org)
 

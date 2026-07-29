@@ -12,40 +12,52 @@ body {
 
 /* ── Navbar ── */
 .navbar {
-    background: #fff;
+    background: linear-gradient(135deg, rgba(127,119,221,0.96), rgba(212,83,126,0.96));
     padding: 14px 32px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 0.5px solid #e5e5e5;
     position: sticky;
     top: 0;
     z-index: 100;
+    box-shadow: 0 6px 20px rgba(83, 74, 183, 0.16);
+}
+
+.nav-brand-link {
+    text-decoration: none;
 }
 
 .nav-brand {
     font-size: 18px;
-    font-weight: 600;
-    background: linear-gradient(135deg, #7F77DD, #D4537E);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.3px;
 }
 
 .nav-links {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 12px;
+    flex-wrap: wrap;
 }
 
 .nav-links a {
-    color: #666;
+    color: rgba(255,255,255,0.92);
     text-decoration: none;
     font-size: 14px;
+    padding: 8px 12px;
+    border-radius: 999px;
+    transition: all 0.2s ease;
 }
 
 .nav-links a:hover {
-    color: #7F77DD;
+    background: rgba(255,255,255,0.16);
+    color: #fff;
+}
+
+.nav-logout {
+    color: #fff !important;
+    background: rgba(255,255,255,0.16) !important;
 }
 
 .nav-user {

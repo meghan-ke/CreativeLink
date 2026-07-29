@@ -19,7 +19,7 @@
             <div class="opp-card">
                 <div class="opp-left">
                     <div class="opp-dot
-                        {% if app.status == 'submitted' %}dot-purple
+                        {% if app.status == 'pending' %}dot-purple
                         {% elif app.status == 'accepted' %}dot-teal
                         {% else %}dot-pink{% endif %}">
                     </div>
@@ -34,7 +34,7 @@
                 </div>
                 <div class="opp-right">
                     <span class="opp-type
-                        {% if app.status == 'submitted' %}type-purple
+                        {% if app.status == 'pending' %}type-purple
                         {% elif app.status == 'accepted' %}type-teal
                         {% else %}type-pink{% endif %}">
                         {{ app.status | capitalize }}
@@ -42,7 +42,7 @@
                     <div style="display:flex;gap:8px;margin-top:4px">
                         <a href="{{ url_for('videos.artist_videos', artist_id=app.young_artist.id) }}"
                            class="opp-apply">View profile</a>
-                        {% if app.status == 'submitted' %}
+                        {% if app.status == 'pending' %}
                         <a href="{{ url_for('opportunities.update_application', application_id=app.id, status='accepted') }}"
                            class="opp-apply" style="color:#1D9E75">Accept</a>
                         <a href="{{ url_for('opportunities.update_application', application_id=app.id, status='rejected') }}"

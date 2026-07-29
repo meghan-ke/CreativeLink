@@ -3,10 +3,6 @@
 {% block content %}
 <div class="post-opp-container">
 
-    <div class="section-header" style="margin-bottom:24px">
-        <a href="{{ url_for('opportunities.browse') }}" class="section-link"> Back to opportunities</a>
-    </div>
-
     <div class="form-section">
         <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px">
             <div>
@@ -57,10 +53,7 @@
         </div>
 
         {% if session.get('role') == 'artist' %}
-        <form method="POST"
-            action="{{ url_for('applications.apply', opportunity_id=opportunity.id) }}">
-            <button type="submit" class="btn btn-primary">Apply for this opportunity</button>
-        </form>
+        <a href="{{ url_for('applications.apply', opportunity_id=opportunity.id) }}" class="btn btn-primary">Apply for this opportunity</a>
         {% endif %}
 
     </div>

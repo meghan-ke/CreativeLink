@@ -3,11 +3,14 @@
 {% block content %}
 <div class="post-opp-container">
 
-    <!-- Artist banner -->
     <div class="banner" style="margin-bottom:24px">
         <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px">
-            <div class="org-avatar" style="width:56px;height:56px;font-size:24px">
-                {{ artist.name[0] }}
+            <div class="org-avatar" style="width:72px;height:72px;font-size:28px">
+                {% if artist.profile_picture_url %}
+                    <img src="{{ artist.profile_picture_url }}" alt="{{ artist.name }}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">
+                {% else %}
+                    {{ artist.name[0] if artist.name else 'A' }}
+                {% endif %}
             </div>
             <div>
                 <p class="banner-greeting">Young Artist</p>
@@ -29,7 +32,17 @@
         </div>
     </div>
 
-    <!-- Profile details -->
+    {% if artist.cover_photo_url %}
+    <div style="margin-bottom:24px">
+        <img src="{{ artist.cover_photo_url }}" alt="{{ artist.name }} cover" style="width:100%;max-height:220px;object-fit:cover;border-radius:12px">
+    </div>
+    {% endif %}
+
+    <div class="form-section" style="margin-bottom:24px">
+        <p class="form-section-label">About</p>
+        <p style="margin:0;line-height:1.7">{{ artist.bio or 'This artist has not added a bio yet.' }}</p>
+    </div>
+
     <div class="form-section" style="margin-bottom:24px">
         <p class="form-section-label">Profile details</p>
         <div class="profile-details" style="margin:0">
@@ -45,14 +58,17 @@
                 <span class="profile-label">Location</span>
                 <span class="profile-value">{{ artist.location }}</span>
             </div>
-            <div class="profile-row" style="border:none">
+            <div class="profile-row">
                 <span class="profile-label">Age</span>
                 <span class="profile-value">{{ artist.age }}</span>
+            </div>
+            <div class="profile-row" style="border:none">
+                <span class="profile-label">Social links</span>
+                <span class="profile-value">{{ artist.social_links or 'Not provided' }}</span>
             </div>
         </div>
     </div>
 
-    <!-- Videos -->
     <div class="section-header">
         <p class="section-label">Talent videos</p>
     </div>
@@ -61,17 +77,14 @@
         {% if videos %}
             {% for video in videos %}
             <div class="form-section" style="padding:16px">
-                <div style="display:flex;justify-content:space-between;
-                            align-items:center;margin-bottom:12px">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
                     <div>
                         <p class="opp-title">{{ video.title }}</p>
-                        <p class="opp-meta">{{ video.art_form }} ·
-                            {{ video.uploaded_at.strftime('%b %d, %Y') }}</p>
+                        <p class="opp-meta">{{ video.art_form }} · {{ video.uploaded_at.strftime('%b %d, %Y') }}</p>
                     </div>
                     <span class="opp-type type-purple">{{ video.art_form }}</span>
                 </div>
-                <video controls style="width:100%;border-radius:8px;
-                                       max-height:360px;background:#000">
+                <video controls style="width:100%;border-radius:8px;max-height:360px;background:#000">
                     <source src="{{ video.video_url }}" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
@@ -85,12 +98,8 @@
         {% endif %}
     </div>
 
-    <!-- Actions -->
     <div class="btn-row">
-        <a href="{{ url_for('organisations.search_artists') }}"
-           class="btn btn-secondary">← Back to search</a>
-        <a href="{{ url_for('messages.send', receiver_id=artist.user_id) }}"
-           class="btn btn-primary">Contact artist</a>
+        <a href="{{ url_for('messages.send', receiver_id=artist.user_id) }}" class="btn btn-primary">Contact artist</a>
     </div>
 
 </div>

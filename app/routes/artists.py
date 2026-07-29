@@ -63,6 +63,10 @@ def edit_profile():
         artist.age = int(request.form.get('age'))
         artist.location = request.form.get('location')
         artist.art_form = request.form.get('art_form')
+        artist.bio = request.form.get('bio') or None
+        artist.profile_picture_url = request.form.get('profile_picture_url') or None
+        artist.cover_photo_url = request.form.get('cover_photo_url') or None
+        artist.social_links = request.form.get('social_links') or None
         db.session.commit()
         return redirect(url_for('artists.profile'))
     return render_template('artist_profile.html', artist=artist, edit=True)

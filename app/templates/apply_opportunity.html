@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="post-opp-container">
+    <div class="form-section">
+        <div style="margin-bottom:24px">
+            <p class="section-label">Apply for opportunity</p>
+            <h2 style="font-size:22px;font-weight:500;color:#333;margin-top:6px">{{ opportunity.title }}</h2>
+            <p style="font-size:13px;color:#999;margin-top:8px">Please complete the form below so the organisation can review your application.</p>
+        </div>
+
+        <form method="POST" action="{{ url_for('applications.apply', opportunity_id=opportunity.id) }}" enctype="multipart/form-data">
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Full name</label>
+                    <input type="text" name="full_name" value="{{ artist.name }}" required>
+                </div>
+                <div class="form-group">
+                    <label>Date of birth</label>
+                    <input type="date" name="date_of_birth" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Nationality</label>
+                    <input type="text" name="nationality" placeholder="e.g. Rwandan" required>
+                </div>
+                <div class="form-group">
+                    <label>Phone number</label>
+                    <input type="text" name="phone_number" placeholder="e.g. +250 788 000 000" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Cover letter</label>
+                <textarea name="cover_letter" rows="5" placeholder="Explain why you are interested in this opportunity"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Relevant experience</label>
+                <textarea name="relevant_experience" rows="5" placeholder="Briefly describe your background and experience"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Availability</label>
+                <input type="text" name="availability" placeholder="When can you start?" required>
+            </div>
+
+            <div class="form-group">
+                <label>Showcase video</label>
+                <input type="file" name="showcase_video" accept="video/*">
+                <p style="font-size:12px;color:#777;margin-top:6px">Upload a new video here, or choose one of your existing uploads below.</p>
+            </div>
+
+
+            <div class="btn-row">
+                <a href="{{ url_for('opportunities.view', id=opportunity.id) }}" class="btn btn-secondary">Cancel</a>
+                <button type="submit" class="btn btn-primary">Submit application</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

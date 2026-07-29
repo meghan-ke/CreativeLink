@@ -8,17 +8,28 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 </head>
 <body>
+    {% if session.get('user_id') and request.endpoint not in ['auth.landing', 'auth.register', 'auth.login'] and not request.path.endswith('/dashboard') %}
     <nav class="navbar">
-        <div class="nav-brand">CreativeLink</div>
+        <a href="{% if session.get('role') == 'artist' %}{{ url_for('artists.dashboard') }}{% else %}{{ url_for('organisations.dashboard') }}{% endif %}" class="nav-brand-link">
+            <div class="nav-brand">CreativeLink</div>
+        </a>
         <div class="nav-links">
-            {% if session.get('user_id') %}
-                <a href="{{ url_for('auth.logout') }}">Logout</a>
+            <a href="{% if session.get('role') == 'artist' %}{{ url_for('artists.dashboard') }}{% else %}{{ url_for('organisations.dashboard') }}{% endif %}">Home</a>
+            {% if session.get('role') == 'artist' %}
+                <a href="{{ url_for('artists.profile') }}">Profile</a>
+                <a href="{{ url_for('opportunities.browse') }}">Opportunities</a>
+                <a href="{{ url_for('applications.my_applications') }}">Applications</a>
+                <a href="{{ url_for('messages.inbox') }}">Messages</a>
             {% else %}
-                <a href="{{ url_for('auth.login') }}">Login</a>
-                <a href="{{ url_for('auth.register') }}">Register</a>
+                <a href="{{ url_for('organisations.profile') }}">Profile</a>
+                <a href="{{ url_for('opportunities.post') }}">Post opportunity</a>
+                <a href="{{ url_for('organisations.search_artists') }}">Search artists</a>
+                <a href="{{ url_for('messages.inbox') }}">Messages</a>
             {% endif %}
+            <a href="{{ url_for('auth.logout') }}" class="nav-logout">Logout</a>
         </div>
     </nav>
+    {% endif %}
 
     <div class="main-content">
         {% block content %}{% endblock %}

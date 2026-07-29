@@ -3,7 +3,6 @@
 {% block content %}
 <div class="section-header" style="margin-bottom:20px">
     <p class="section-label">My applications</p>
-    <a href="{{ url_for('artists.dashboard') }}" class="section-link"> Back</a>
 </div>
 
 <div class="opp-list">
@@ -12,7 +11,7 @@
         <div class="opp-card">
             <div class="opp-left">
                 <div class="opp-dot
-                    {% if app.status == 'submitted' %}dot-purple
+                    {% if app.status == 'pending' %}dot-purple
                     {% elif app.status == 'accepted' %}dot-teal
                     {% else %}dot-pink{% endif %}">
                 </div>
@@ -25,12 +24,12 @@
             </div>
             <div class="opp-right">
                 <span class="opp-type
-                    {% if app.status == 'submitted' %} type-purple
+                    {% if app.status == 'pending' %} type-purple
                     {% elif app.status == 'accepted' %} type-teal
                     {% else %}type-pink{% endif %}">
                     {{ app.status | capitalize }}
                 </span>
-                {% if app.status == 'submitted' %}
+                {% if app.status == 'pending' %}
                 <a href="{{ url_for('applications.withdraw', application_id=app.id) }}"
                     class="opp-apply"
                     style="color:#D4537E"

@@ -40,7 +40,16 @@ def profile():
     if org is None:
         session.clear()
         return redirect(url_for('auth.login'))
-    return render_template('org_profile.html', org=org)
+    opportunities = Opportunity.query.filter_by(organisation_id=org.id).all()
+    open_opportunities_count = sum(
+        1 for opportunity in opportunities if opportunity.status and opportunity.status.lower() == 'open'
+    )
+    return render_template(
+        'org_profile.html',
+        org=org,
+        opportunities=opportunities,
+        open_opportunities_count=open_opportunities_count
+    )
 
 @organisations_bp.route('/profile/edit', methods=['GET', 'POST'])
 def edit_profile():
@@ -55,10 +64,25 @@ def edit_profile():
         org.org_name = request.form.get('org_name')
         org.org_type = request.form.get('org_type')
         org.location = request.form.get('location')
+        org.contact_email = request.form.get('contact_email') or None
+        org.website = request.form.get('website') or None
+        org.phone = request.form.get('phone') or None
+        org.logo_url = request.form.get('logo_url') or None
+        org.about_us = request.form.get('about_us') or None
         db.session.commit()
         return redirect(url_for('organisations.profile'))
     
-    return render_template('org_profile.html', org=org, edit=True)
+    opportunities = Opportunity.query.filter_by(organisation_id=org.id).all()
+    open_opportunities_count = sum(
+        1 for opportunity in opportunities if opportunity.status and opportunity.status.lower() == 'open'
+    )
+    return render_template(
+        'org_profile.html',
+        org=org,
+        opportunities=opportunities,
+        open_opportunities_count=open_opportunities_count,
+        edit=True
+    )
 
 @organisations_bp.route('/search-artists')
 def search_artists():
