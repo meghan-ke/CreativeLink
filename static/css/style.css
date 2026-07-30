@@ -734,3 +734,20 @@ textarea:focus {
     padding: 10px 20px;
     white-space: nowrap;
 }
+
+/* ── Application review styling ── */
+.application-review .opp-card {
+    padding: 20px 22px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+.application-review .form-section-label {
+    margin-bottom: 8px;
+}
+.application-review .opp-meta {
+    color: #666;
+}
+.application-review .btn {
+    min-width: 110px;
+}
+.application-review p { line-height: 1.6; color: #444; }
