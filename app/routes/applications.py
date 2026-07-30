@@ -18,6 +18,7 @@ applications_bp = Blueprint('applications', __name__)
 
 @applications_bp.route('/apply/<opportunity_id>', methods=['GET', 'POST'])
 def apply(opportunity_id):
+    print("Apply route reached")
     if 'user_id' not in session:
         return redirect(url_for('auth.login'))
 
