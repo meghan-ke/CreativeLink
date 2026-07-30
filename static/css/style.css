@@ -740,6 +740,7 @@ textarea:focus {
     padding: 20px 22px;
     max-width: 900px;
     margin: 0 auto;
+    dsplay: block;
 }
 .application-review .form-section-label {
     margin-bottom: 8px;
