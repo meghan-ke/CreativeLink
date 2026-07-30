@@ -2,8 +2,25 @@ from flask import Blueprint, render_template, session, redirect, url_for, reques
 from datetime import datetime
 from app import db
 from app.models import Opportunity, Organisation, Application, YoungArtist
+import cloudinary
+import cloudinary.uploader
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+cloudinary.config(
+    cloud_name=os.getenv('CLOUDINARY_CLOUD_NAME'),
+    api_key=os.getenv('CLOUDINARY_API_KEY'),
+    api_secret=os.getenv('CLOUDINARY_API_SECRET')
+)
 
 opportunities_bp = Blueprint('opportunities', __name__)
+
+def get_current_organisation():
+    if 'user_id' not in session:
+        return None
+    return Organisation.query.filter_by(user_id=session['user_id']).first()
 
 @opportunities_bp.route('/browse')
 def browse():
@@ -34,6 +51,16 @@ def post():
         return redirect(url_for('auth.login'))
 
     if request.method == 'POST':
+        banner_image = request.files.get('banner_image')
+        banner_url = None
+        if banner_image and banner_image.filename:
+            upload_result = cloudinary.uploader.upload(
+                banner_image,
+                resource_type='image',
+                folder='creativelink/opportunity_banners'
+            )
+            banner_url = upload_result.get('secure_url')
+
         new_opportunity = Opportunity(
             organisation_id=org.id,
             title=request.form.get('title'),
@@ -43,6 +70,7 @@ def post():
             criteria=request.form.get('criteria'),
             location=request.form.get('location'),
             deadline=datetime.strptime(request.form.get('deadline'), '%Y-%m-%d'),
+            banner_url=banner_url,
             status='open'
         )
         db.session.add(new_opportunity)
@@ -65,7 +93,18 @@ def view_applications(opportunity_id):
     if 'user_id' not in session:
         return redirect(url_for('auth.login'))
 
+    if session.get('role', '').lower() != 'organisation':
+        return redirect(url_for('artists.dashboard'))
+
+    org = get_current_organisation()
+    if org is None:
+        session.clear()
+        return redirect(url_for('auth.login'))
+
     opportunity = Opportunity.query.get_or_404(opportunity_id)
+    if opportunity.organisation_id != org.id:
+        return redirect(url_for('organisations.dashboard'))
+
     applications = Application.query.filter_by(
         opportunity_id=opportunity_id
     ).all()
@@ -75,13 +114,45 @@ def view_applications(opportunity_id):
                      applications=applications
     )
 
+@opportunities_bp.route('/applications/<application_id>/review')
+def review_application(application_id):
+    if 'user_id' not in session:
+        return redirect(url_for('auth.login'))
+
+    if session.get('role', '').lower() != 'organisation':
+        return redirect(url_for('artists.dashboard'))
+
+    org = get_current_organisation()
+    if org is None:
+        session.clear()
+        return redirect(url_for('auth.login'))
+
+    application = Application.query.get_or_404(application_id)
+    opportunity = Opportunity.query.get_or_404(application.opportunity_id)
+    if opportunity.organisation_id != org.id:
+        return redirect(url_for('organisations.dashboard'))
+
+    return render_template('application_review.html', application=application)
+
 
 @opportunities_bp.route('/applications/update/<application_id>/<status>')
 def update_application(application_id, status):
     if 'user_id' not in session:
         return redirect(url_for('auth.login'))
 
+    if session.get('role', '').lower() != 'organisation':
+        return redirect(url_for('artists.dashboard'))
+
+    org = get_current_organisation()
+    if org is None:
+        session.clear()
+        return redirect(url_for('auth.login'))
+
     application = Application.query.get_or_404(application_id)
+    opportunity = Opportunity.query.get_or_404(application.opportunity_id)
+    if opportunity.organisation_id != org.id:
+        return redirect(url_for('organisations.dashboard'))
+
     application.status = status
     db.session.commit()
 

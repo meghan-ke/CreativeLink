@@ -40,6 +40,8 @@
                         {{ app.status | capitalize }}
                     </span>
                     <div style="display:flex;gap:8px;margin-top:4px">
+                        <a href="{{ url_for('opportunities.review_application', application_id=app.id) }}"
+                           class="opp-apply">Review form</a>
                         <a href="{{ url_for('videos.artist_videos', artist_id=app.young_artist.id) }}"
                            class="opp-apply">View profile</a>
                         {% if app.status == 'pending' %}

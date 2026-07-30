@@ -62,6 +62,7 @@ class Opportunity(db.Model):
     location = db.Column(db.String(100), nullable=False)
     art_form = db.Column(db.String(100), nullable=True)
     description = db.Column(db.Text, nullable=True)
+    banner_url = db.Column(db.String(255), nullable=True)
     status = db.Column(db.String(20), default='open')
     applications = db.relationship('Application', backref='opportunity', lazy=True)
 

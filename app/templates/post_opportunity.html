@@ -15,7 +15,7 @@
         <p class="post-opp-sub">Fill in the details below to list a new opportunity for artists on CreativeLink</p>
     </div>
 
-    <form method="POST" action="{{ url_for('opportunities.post') }}" class="post-opp-form">
+    <form method="POST" action="{{ url_for('opportunities.post') }}" class="post-opp-form" enctype="multipart/form-data">
 
         <div class="form-section">
             <p class="form-section-label"> Basic details</p>
@@ -40,6 +40,15 @@
                     <label>Art form required</label>
                     <input type="text" name="art_form" placeholder="e.g. Dance, Music, Painting"/>
                 </div>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <p class="form-section-label"> Opportunity banner</p>
+            <div class="form-group">
+                <label> Banner image</label>
+                <input type="file" name="banner_image" accept="image/*" />
+                <p style="font-size:12px;color:#777;margin-top:6px">Add a visual banner to showcase this opportunity.</p>
             </div>
         </div>
 

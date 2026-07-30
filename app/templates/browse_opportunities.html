@@ -18,7 +18,7 @@
             </div>
             <div class="opp-right">
                 <span class="opp-type type-purple">{{ opp.type }}</span>
-                <a href="#" class="opp-apply">Apply →</a>
+                <a href="{{ url_for('applications.apply', opportunity_id=opp.id) }}" class="opp-apply">Apply →</a>
             </div>
         </div>
         {% endfor %}

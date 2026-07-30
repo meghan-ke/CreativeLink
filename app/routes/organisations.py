@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, session, redirect, url_for, request
 from app import db
-from app.models import Organisation, User, Opportunity, YoungArtist
+from app.models import Organisation, User, Opportunity, YoungArtist, Application
 
 organisations_bp = Blueprint('organisations', __name__)
 
@@ -31,6 +31,26 @@ def dashboard():
                     opportunities=opportunities,
                     total_opportunities=len(opportunities)                     
     )
+
+@organisations_bp.route('/applications')
+def applications():
+    if 'user_id' not in session:
+        return redirect(url_for('auth.login'))
+    if session.get('role', '').lower() != 'organisation':
+        return redirect(url_for('artists.dashboard'))
+
+    org = get_current_organisation()
+    if org is None:
+        session.clear()
+        return redirect(url_for('auth.login'))
+
+    applications = Application.query.join(Opportunity).filter(
+        Opportunity.organisation_id == org.id
+    ).order_by(Application.submitted_at.desc()).all()
+
+    return render_template('org_applications.html',
+                           org=org,
+                           applications=applications)
 
 @organisations_bp.route('/profile')
 def profile():

@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="section-header" style="margin-bottom:20px">
+    <p class="section-label">Received applications</p>
+    <a href="{{ url_for('organisations.dashboard') }}" class="section-link">← Back to dashboard</a>
+</div>
+
+<div class="opp-list">
+    {% if applications %}
+        {% for app in applications %}
+        <div class="opp-card">
+            <div class="opp-left">
+                <div class="opp-dot
+                    {% if app.status == 'pending' %}dot-purple
+                    {% elif app.status == 'accepted' %}dot-teal
+                    {% else %}dot-pink{% endif %}">
+                </div>
+                <div>
+                    <p class="opp-title">{{ app.opportunity.title }}</p>
+                    <p class="opp-meta">
+                        {{ app.young_artist.name }} · {{ app.young_artist.art_form }} · Applied {{ app.submitted_at.strftime('%b %d, %Y') }}
+                    </p>
+                </div>
+            </div>
+            <div class="opp-right">
+                <span class="opp-type
+                    {% if app.status == 'pending' %}type-purple
+                    {% elif app.status == 'accepted' %}type-teal
+                    {% else %}type-pink{% endif %}">
+                    {{ app.status | capitalize }}
+                </span>
+                <div style="display:flex;gap:8px;margin-top:4px">
+                    <a href="{{ url_for('videos.artist_videos', artist_id=app.young_artist.id) }}" class="opp-apply">View artist</a>
+                    {% if app.status == 'pending' %}
+                    <a href="{{ url_for('opportunities.update_application', application_id=app.id, status='accepted') }}" class="opp-apply" style="color:#1D9E75">Accept</a>
+                    <a href="{{ url_for('opportunities.update_application', application_id=app.id, status='rejected') }}" class="opp-apply" style="color:#D4537E">Reject</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="empty-state">
+            <i class="ti ti-file-list" aria-hidden="true"></i>
+            <p>No applications have been received yet. Share your opportunity to attract artists.</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
